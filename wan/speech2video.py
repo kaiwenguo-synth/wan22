@@ -191,7 +191,7 @@ class WanS2V:
                                 height,
                                 width,
                                 target_area=1024 * 704,
-                                divisor=64):
+                                divisor=16):
         if height * width <= target_area:
             # If the original image area is already less than or equal to the target,
             # no resizing is needed—just padding. Still need to ensure that the padded area doesn't exceed the target.
@@ -219,9 +219,9 @@ class WanS2V:
             scale = max_scale - (max_scale - min_scale) * i / 100
             new_height, new_width = int(height * scale), int(width * scale)
 
-            # Pad to make dimensions divisible by 64
-            pad_height = (64 - new_height % 64) % 64
-            pad_width = (64 - new_width % 64) % 64
+            # Pad to make dimensions divisible by divisor
+            pad_height = (divisor - new_height % divisor) % divisor
+            pad_width = (divisor - new_width % divisor) % divisor
             pad_top = pad_height // 2
             pad_bottom = pad_height - pad_top
             pad_left = pad_width // 2
