@@ -28,6 +28,7 @@ from .utils.fm_solvers import (
     retrieve_timesteps,
 )
 from .utils.fm_solvers_unipc import FlowUniPCMultistepScheduler
+from .utils import FlowMatchEulerDiscreteScheduler
 from .utils.utils import best_output_size, masks_like
 
 
@@ -350,6 +351,13 @@ class WanTI2V:
                     sample_scheduler,
                     device=self.device,
                     sigmas=sampling_sigmas)
+            elif sample_solver == 'euler':
+                sample_scheduler = FlowMatchEulerDiscreteScheduler(
+                    num_train_timesteps=self.num_train_timesteps,
+                )
+                sample_scheduler.set_timesteps(
+                    sampling_steps, device=self.device)
+                timesteps = sample_scheduler.timesteps
             else:
                 raise NotImplementedError("Unsupported solver.")
 
@@ -542,6 +550,13 @@ class WanTI2V:
                     sample_scheduler,
                     device=self.device,
                     sigmas=sampling_sigmas)
+            elif sample_solver == 'euler':
+                sample_scheduler = FlowMatchEulerDiscreteScheduler(
+                    num_train_timesteps=self.num_train_timesteps,
+                )
+                sample_scheduler.set_timesteps(
+                    sampling_steps, device=self.device)
+                timesteps = sample_scheduler.timesteps
             else:
                 raise NotImplementedError("Unsupported solver.")
 
